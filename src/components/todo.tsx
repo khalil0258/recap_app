@@ -1,21 +1,31 @@
+import { Trash } from "lucide-react";
 import { todo } from "../Types/todos";
 
 interface todoItemProps {
 
-    todo: todo
+    todo: todo,
+    onCompleteChange:(id:number,isCompleted:boolean)=>void;
+    onDelete:(id:number)=>void
  }
 
 
- export default function TodoItem( {todo} :todoItemProps){
+ export default function TodoItem( {todo,onCompleteChange,onDelete} :todoItemProps){
     return (
         <div
         key={todo.id}
-        className="flex items-center gap-2 border rounded-md p-2"
+        className="flex border rounded-md p-2 "
         > 
-        <label><input type="checkbox" className="scale-125" />
+        <label className="flex items-center gap-2 w-[95%] ">
+            <input type="checkbox" className="scale-125 mx-5" 
+            checked={todo.completed}
+            onChange={(e)=>onCompleteChange(todo.id,e.target.checked)}
+            />
         
         <span className={todo.completed? "line-through text-gray-400":""}>{todo.title}</span>
+
         
-        </label></div>
+        </label>
+        <Trash size={20} className="text-gray-300 cursor-pointer hover:text-gray-500" onClick={()=>onDelete(todo.id)} />
+        </div>
     )
  }
